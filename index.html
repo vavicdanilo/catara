@@ -55,26 +55,27 @@ body{background:linear-gradient(#f0f2f6,#f7f7f9)}
 @media(max-width:360px){.hero-inner{min-height:320px}.hero-couple{height:151px}.hero-title h1{font-size:44px}.stat b{font-size:26px}.stat small{font-size:10px}}
 @media(min-width:650px){.hero{max-width:520px;margin:12px auto 0;border-radius:24px}.hero-inner{min-height:380px}.hero-couple{height:220px}}
 </style><style id="catara-reference-banner">
-/* Zaglavlje prema korisničkom primjeru, prilagođeno isključivo telefonu */
-.catara-banner{position:relative!important;max-width:none!important;margin:0!important;border-radius:0!important;min-height:300px;padding:0!important;overflow:hidden!important;background:linear-gradient(180deg,#a8baca 0%,#d7c8c0 36%,#527e92 68%,#d7e4eb 100%)!important;color:#fff;isolation:isolate}
+/* Jedinstvena panoramska naslovnica; prvenstveno mobilni ekran */
+.catara-banner{position:relative!important;isolation:isolate;overflow:hidden!important;width:100%;max-width:none!important;margin:0!important;border-radius:0!important;padding:0!important;min-height:294px;background:linear-gradient(180deg,#b9c6d5 0%,#d0c9c8 32%,#5a8297 58%,#9cbbc9 86%,#edf1f5 100%)!important;color:white}
 .catara-banner:before{display:none!important}
-.bay-mountains{position:absolute;inset:0 0 28%;background:linear-gradient(180deg,#203c4c1a,#263c4c85),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 250' preserveAspectRatio='none'%3E%3Cpath fill='%23445b61' d='M0 62 65 17 130 53 185 25 260 99 310 45 359 74 403 16 464 88 530 35 602 82 666 24 730 75 800 37V250H0Z'/%3E%3Cpath fill='%236d7472' d='M0 110 90 85 190 124 250 74 341 128 433 94 520 129 614 80 718 121 800 86V250H0Z'/%3E%3C/svg%3E") center bottom/100% 80% no-repeat;opacity:.85;z-index:-2}
-.bay-water{position:absolute;inset:55% 0 0;background:repeating-linear-gradient(175deg,#ffffff28 0 1px,transparent 1px 10px),linear-gradient(#43738c,#8fb1c1 55%,#eff2f4);z-index:-1}
-.catara-banner-content{position:relative;width:100%;max-width:520px;margin:0 auto;min-height:300px;padding:12px 9px 0;display:flex;flex-direction:column;justify-content:space-between}
-.banner-titles{position:relative;z-index:5;text-align:center;text-shadow:0 2px 9px #0f263eaa}
-.banner-titles h1{font-family:"Snell Roundhand","Brush Script MT","Segoe Script",Georgia,serif;font-weight:400;font-style:italic;letter-spacing:-2px;font-size:clamp(40px,11.5vw,60px);line-height:1.12;margin:0 0 5px}
-.banner-titles .amp{font-size:.68em;padding:0 2px}.banner-titles .love{font-family:Georgia,serif;font-style:normal;color:#a9232e;font-size:1.05em;letter-spacing:-12px;margin-left:-3px;margin-right:4px}
-.banner-titles p{font-size:clamp(9px,2.75vw,12px);font-weight:800;letter-spacing:3.1px;margin:0 0 5px}
-.banner-titles small{display:block;font-size:clamp(8px,2.4vw,11px);font-weight:700;letter-spacing:1.7px}
-.banner-scene{position:relative;z-index:2;height:185px;margin-top:4px;display:flex;align-items:flex-end;justify-content:space-between}
-.banner-car{position:relative;z-index:3;width:43%;height:116px;display:flex;align-items:center;filter:drop-shadow(0 12px 8px #142b3766)}
-.banner-car img{display:block;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;border-radius:4px}
-.banner-couple{position:relative;z-index:3;width:44%;height:190px;overflow:hidden;align-self:flex-end;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 77%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 77%,transparent 100%)}
-.banner-couple img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 17%}
-.banner-ferry{position:absolute;left:38%;bottom:7px;width:28%;z-index:2;filter:drop-shadow(0 5px 4px #173c5266)}
+.bay-mountains{position:absolute;inset:0 0 30%;z-index:-2;background:linear-gradient(180deg,#a1adbd0a,#25394e4f),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 260' preserveAspectRatio='none'%3E%3Cpath fill='%234a5860' d='M0 75 45 27 95 64 159 10 242 88 295 52 350 108 418 21 480 80 530 37 590 108 650 22 730 82 786 19 850 89 900 38V260H0Z'/%3E%3Cpath fill='%236b7478' d='M0 143 82 108 148 136 210 83 290 140 364 98 421 127 487 104 552 146 628 100 693 131 775 99 842 139 900 105V260H0Z'/%3E%3C/svg%3E") center bottom/100% 88% no-repeat;opacity:.93}
+.bay-water{position:absolute;inset:54% 0 0;z-index:-1;background:repeating-linear-gradient(175deg,#edf5f51b 0 1px,transparent 1px 8px),linear-gradient(180deg,#3e6d84,#799bad 58%,#f3f4f6)}
+.catara-banner-content{position:relative;max-width:520px;min-height:294px;margin:auto;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 0 0}
+.banner-titles{position:absolute;z-index:5;top:14px;left:0;right:0;text-align:center;text-shadow:0 2px 12px #132635bb;pointer-events:none}
+.banner-titles h1{font:italic 400 clamp(39px,11.4vw,60px)/1.04 Georgia,serif;letter-spacing:-1.8px;margin:0 0 7px;color:#fff}
+.banner-titles .amp{font-size:.72em;letter-spacing:0}.banner-titles .love{font:normal 400 .98em Georgia,serif;color:#ba2530;letter-spacing:-5px;margin:0 5px 0 1px}
+.banner-titles p{font-size:clamp(9px,2.55vw,12px);font-weight:800;letter-spacing:2.8px;margin:0 0 4px}
+.banner-titles small{display:block;font-size:clamp(8px,2.1vw,11px);letter-spacing:1.5px;font-weight:700}
+.banner-scene{position:relative;height:210px;margin:0;display:block;width:100%}
+.banner-car{position:absolute;left:-1%;bottom:34px;width:45%;height:125px;display:block;z-index:3;filter:drop-shadow(0 8px 5px #1626346b)}
+.banner-car img{width:100%;height:100%;object-fit:contain;display:block;border:0!important;border-radius:0!important;-webkit-mask-image:radial-gradient(ellipse 75% 70% at 50% 52%,black 64%,transparent 100%);mask-image:radial-gradient(ellipse 75% 70% at 50% 52%,black 64%,transparent 100%)}
+.banner-couple{position:absolute;right:-3%;bottom:0;width:47%;height:210px;display:block;overflow:hidden;z-index:3;border:0;border-radius:0;box-shadow:none;-webkit-mask-image:linear-gradient(to bottom,black 0%,black 72%,transparent 100%);mask-image:linear-gradient(to bottom,black 0%,black 72%,transparent 100%)}
+.banner-couple img{width:100%;height:100%;object-fit:cover;object-position:50% 17%;display:block;border-radius:0}
+.banner-ferry{position:absolute;left:38%;bottom:30px;width:28%;max-width:145px;z-index:2;filter:drop-shadow(0 4px 3px #16334688)}
 .banner-ferry svg{width:100%;height:auto;display:block}
-@media(max-width:360px){.catara-banner,.catara-banner-content{min-height:275px}.banner-scene{height:162px}.banner-couple{height:170px}.banner-car{height:106px}.banner-titles h1{font-size:39px}}
-@media(min-width:650px){.catara-banner{max-width:520px!important;margin:12px auto 0!important;border-radius:22px!important}.catara-banner-content{min-height:335px}.banner-scene{height:220px}.banner-couple{height:215px}.banner-car{height:135px}}
+.catara-banner:after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:40px;background:linear-gradient(transparent,#f2f3f6);z-index:4;pointer-events:none}
+@media(max-width:350px){.catara-banner,.catara-banner-content{min-height:268px}.banner-scene{height:188px}.banner-couple{height:188px}.banner-car{height:106px;bottom:28px}.banner-ferry{bottom:25px}.banner-titles h1{font-size:38px}}
+@media(min-width:650px){.catara-banner{max-width:520px!important;margin:12px auto 0!important;border-radius:20px!important}.catara-banner-content{min-height:340px}.banner-scene{height:240px}.banner-couple{height:240px}.banner-car{height:150px}.banner-titles{top:15px}}
 </style></head><body>
 <header class="hero catara-banner" aria-label="Polo i Mi — evidencija prelazaka">
   <div class="bay-mountains" aria-hidden="true"></div>
