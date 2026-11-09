@@ -76,8 +76,15 @@ body{background:linear-gradient(#f0f2f6,#f7f7f9)}
 .catara-banner:after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:40px;background:linear-gradient(transparent,#f2f3f6);z-index:4;pointer-events:none}
 @media(max-width:350px){.catara-banner,.catara-banner-content{min-height:268px}.banner-scene{height:188px}.banner-couple{height:188px}.banner-car{height:106px;bottom:28px}.banner-ferry{bottom:25px}.banner-titles h1{font-size:38px}}
 @media(min-width:650px){.catara-banner{max-width:520px!important;margin:12px auto 0!important;border-radius:20px!important}.catara-banner-content{min-height:340px}.banner-scene{height:240px}.banner-couple{height:240px}.banner-car{height:150px}.banner-titles{top:15px}}
+</style><style id="original-header-photo">
+.catara-banner.has-reference-image{min-height:0!important;height:auto!important;background:#e9edf1!important}
+.catara-banner.has-reference-image .catara-banner-content,.catara-banner.has-reference-image .bay-mountains,.catara-banner.has-reference-image .bay-water{display:none!important}
+.catara-banner.has-reference-image:after{display:none!important}
+.reference-header-image{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;position:relative;z-index:10}
+@media(min-width:650px){.catara-banner.has-reference-image{max-width:520px!important}}
 </style></head><body>
 <header class="hero catara-banner" aria-label="Polo i Mi — evidencija prelazaka">
+<img class="reference-header-image" src="polo-mi-zaglavlje-16x9.jpg" alt="Polo i Mi — panoramski prikaz sa trajektom i Bokom" onload="this.parentElement.classList.add('has-reference-image')" onerror="this.remove()">
   <div class="bay-mountains" aria-hidden="true"></div>
   <div class="bay-water" aria-hidden="true"></div>
   <div class="catara-banner-content">
