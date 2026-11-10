@@ -26,6 +26,7 @@
 .panel{border-radius:18px;padding:17px}.hint{font-size:12px;line-height:1.45}
 @media(max-width:360px){.photos{gap:7px}.car-panel{padding:5px}.car-caption{font-size:11px}.mini-sea{margin:6px 0}.couple-panel img{max-height:215px}.hero{padding-left:10px;padding-right:10px}}
 @media(min-width:650px){.hero{max-width:520px;margin:14px auto 0;border-radius:26px}.hero-inner{max-width:425px}.couple-panel img{max-height:255px}}
+[hidden]{display:none!important}button:disabled{opacity:.5;cursor:not-allowed}.sync-note{font-size:12px;color:#667085}
 </style><style id="mobile-redesign">
 :root{background:#f2f3f6;color:#171b29}
 body{background:linear-gradient(#f0f2f6,#f7f7f9)}
@@ -84,31 +85,108 @@ body{background:linear-gradient(#f0f2f6,#f7f7f9)}
 @media(min-width:650px){.catara-banner.has-reference-image{max-width:520px!important}}
 </style><style id="exact-photo-header-fix">.catara-exact-header{display:block;width:100%;margin:0 auto;max-width:100%;padding:0;background:#e8ebef;line-height:0;overflow:hidden}.catara-exact-header img{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:1536/358;object-fit:contain}@media(min-width:650px){.catara-exact-header{max-width:700px;border-radius:0 0 16px 16px}}@media(max-width:649px){.catara-exact-header{border-radius:0}.wrap{padding-top:6px}}</style></head><body>
 <header class="catara-exact-header" aria-label="Polo i Mi — panoramsko zaglavlje"><img src="./polo-mi-zaglavlje-16x9.jpg?rev=20261109b" alt="Polo i Mi — originalno panoramsko zaglavlje" loading="eager" fetchpriority="high" decoding="sync"></header>
-<main class="wrap"><section class="panel" id="authPanel" aria-live="polite"><h2>🔐 Google prijava</h2><p class="muted" id="authStatus">Učitavanje prijave…</p><div class="controls"><button class="secondary" id="googleLogin" type="button" hidden>Prijavi se putem Google naloga</button><button class="secondary" id="googleLogout" type="button" hidden>Odjavi se</button></div><p class="muted" id="authUserId" hidden></p><p class="muted" style="font-size:12px">Za sada je ovo samo prijava. Evidencija se i dalje čuva lokalno na ovom telefonu dok ne zaštitimo zajedničku Firebase bazu.</p></section><section class="stats"><div class="stat"><span class="stat-icon">⛴</span><small>Ukupno prelazaka</small><b id="total">0</b></div><div class="stat"><span class="stat-icon">▦</span><small>Ovaj mjesec</small><b id="month">0</b></div><div class="stat"><span class="stat-icon">▥</span><small>Najviše u danu</small><b id="best">0</b></div></section><div class="today-note">Danas: <strong id="today">0</strong> prelazaka</div>
-<button class="main" id="add">⛴ Zabilježi prelazak</button><p class="hint" id="message">Jedan dodir = jedan prelazak. Datum i vrijeme se bilježe automatski.</p>
+<main class="wrap"><section class="panel" id="authPanel" aria-live="polite"><h2>🔐 Google prijava</h2><p class="muted" id="authStatus">Učitavanje prijave…</p><div class="controls"><button class="secondary" id="googleLogin" type="button" hidden>Prijavi se putem Google naloga</button><button class="secondary" id="googleLogout" type="button" hidden>Odjavi se</button></div><p class="muted" id="authUserId" hidden></p><p class="muted" style="font-size:12px">Prelasci se čuvaju u zajedničkoj Firebase bazi. Prijava ostaje zapamćena na ovom uređaju.</p></section><section class="stats"><div class="stat"><span class="stat-icon">⛴</span><small>Ukupno prelazaka</small><b id="total">0</b></div><div class="stat"><span class="stat-icon">▦</span><small>Ovaj mjesec</small><b id="month">0</b></div><div class="stat"><span class="stat-icon">▥</span><small>Najviše u danu</small><b id="best">0</b></div></section><div class="today-note">Danas: <strong id="today">0</strong> prelazaka</div>
+<p class="sync-note" id="syncStatus" aria-live="polite">Povezivanje sa zajedničkom evidencijom…</p><button class="main" id="add" disabled>⛴ Zabilježi prelazak</button><p class="hint" id="message">Jedan dodir = jedan prelazak. Datum i vrijeme se bilježe automatski.</p>
 <section class="panel"><h2>▦ &nbsp; Prelasci po danima</h2><div id="days"></div></section>
 <section class="panel"><h2>▥ &nbsp; Mjesečni pregled</h2><select id="monthPicker" aria-label="Izaberi mjesec"></select><div id="chart"></div></section>
 <section class="panel"><h2>Dodaj raniji prelazak</h2><div class="controls"><input type="date" id="date"><input type="time" id="time"><button class="secondary" id="past">+ Dodaj</button></div></section>
-<section class="panel"><h2>Podaci i rezervna kopija</h2><p class="muted">Evidencija se čuva samo u ovom pregledaču na ovom telefonu. Ne sinhronizuje se automatski.</p><div class="controls"><button class="secondary" id="undo">↶ Poništi posljednji</button><button class="secondary" id="export">↓ Izvezi kopiju</button><label class="secondary" for="import">↑ Uvezi kopiju</label><input class="hide" type="file" accept=".json,application/json" id="import"></div></section></main>
-<script>
-(()=>{'use strict';const KEY='nasa-catara-v1', $=id=>document.getElementById(id);let entries=[];try{let v=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(v))entries=v.filter(x=>typeof x==='string'&&!Number.isNaN(new Date(x).getTime()))}catch(e){}const pad=n=>String(n).padStart(2,'0'),day=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),month=d=>day(d).slice(0,7),fmt=d=>d.toLocaleDateString('sr-Latn-ME',{day:'2-digit',month:'2-digit',year:'numeric'}),save=()=>localStorage.setItem(KEY,JSON.stringify(entries)),now=new Date();$('date').value=day(now);$('time').value=pad(now.getHours())+':'+pad(now.getMinutes());
-function render(){const current=new Date(),t=day(current),m=month(current),counts={};for(const e of entries){const k=day(new Date(e));counts[k]=(counts[k]||0)+1}$('today').textContent=counts[t]||0;$('month').textContent=entries.filter(e=>month(new Date(e))===m).length;$('total').textContent=entries.length;$('best').textContent=Math.max(0,...Object.values(counts));const keys=Object.keys(counts).sort().reverse();$('days').replaceChildren();if(!keys.length)$('days').textContent='Još nema zabilježenih prelazaka.';for(const k of keys){const r=document.createElement('div');r.className='row';const d=document.createElement('span');d.textContent=fmt(new Date(k+'T12:00:00'));const c=document.createElement('span');c.className='count';c.textContent=counts[k]+' ×';r.append(d,c);$('days').append(r)}const sel=$('monthPicker'),old=sel.value||m;sel.replaceChildren();const months=[...new Set([m,...keys.map(k=>k.slice(0,7))])].sort().reverse();for(const k of months){const o=document.createElement('option');o.value=k;o.textContent=new Date(k+'-01T12:00:00').toLocaleDateString('sr-Latn-ME',{month:'long',year:'numeric'});sel.append(o)}sel.value=months.includes(old)?old:m;draw(counts)}
-function draw(counts){const c=$('chart');c.replaceChildren();const selected=$('monthPicker').value,days=new Date(+selected.slice(0,4),+selected.slice(5,7),0).getDate(),max=Math.max(1,...Array.from({length:days},(_,i)=>counts[selected+'-'+pad(i+1)]||0));for(let i=1;i<=days;i++){const n=counts[selected+'-'+pad(i)]||0;if(!n)continue;const r=document.createElement('div');r.className='bar';const a=document.createElement('span');a.textContent=pad(i)+'.';const b=document.createElement('i');b.style.width=(n/max*75)+'%';const z=document.createElement('b');z.textContent=n;r.append(a,b,z);c.append(r)}if(!c.children.length)c.textContent='Nema prelazaka u ovom mjesecu.'}
-$('add').onclick=()=>{entries.push(new Date().toISOString());save();render();$('message').textContent='✓ Prelazak je sačuvan!'};$('past').onclick=()=>{const d=$('date').value,t=$('time').value;if(!d||!t)return alert('Izaberi datum i vrijeme.');const x=new Date(d+'T'+t);if(Number.isNaN(x.getTime())||x>new Date())return alert('Provjeri datum i vrijeme.');entries.push(x.toISOString());save();render();$('message').textContent='✓ Raniji prelazak je dodat.'};$('undo').onclick=()=>{if(!entries.length)return;const sorted=entries.map((x,i)=>({x,i})).sort((a,b)=>new Date(b.x)-new Date(a.x));if(confirm('Obrisati posljednji zabilježeni prelazak?')){entries.splice(sorted[0].i,1);save();render()}};$('monthPicker').onchange=()=>{const counts={};for(const x of entries){const k=day(new Date(x));counts[k]=(counts[k]||0)+1}draw(counts)};$('export').onclick=()=>{const b=new Blob([JSON.stringify({app:'nasa-catara',entries},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='catara-kopija-'+day(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};$('import').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text()),v=Array.isArray(data)?data:data.entries;if(!Array.isArray(v)||!v.every(x=>typeof x==='string'&&!Number.isNaN(new Date(x).getTime())))throw Error('Neispravan format');if(confirm('Zamijeniti postojeću evidenciju podacima iz kopije?')){entries=v;save();render()}}catch(e){alert('Datoteka nije ispravna rezervna kopija.')}ev.target.value=''};render()})();
-</script>
+<section class="panel"><h2>Podaci i rezervna kopija</h2><p class="muted">Zajednička evidencija se sinhronizuje preko Firebase baze. Ako postoje stari lokalni prelasci, možeš ih prenijeti jednom, bez dupliranja postojećih datuma i vremena.</p><div class="controls"><button class="secondary" id="migrate" type="button" hidden>↑ Prenesi stare prelaske sa ovog telefona</button><button class="secondary" id="undo" disabled>↶ Poništi posljednji</button><button class="secondary" id="export" disabled>↓ Izvezi kopiju</button><label class="secondary" for="import">↑ Uvezi kopiju</label><input class="hide" type="file" accept=".json,application/json" id="import" disabled></div></section></main>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
 const firebaseConfig={apiKey:"AIzaSyCoqDqffZLdOaikiuI29sOln9jPJ5G8UNk",authDomain:"nasa-catara.firebaseapp.com",projectId:"nasa-catara",storageBucket:"nasa-catara.firebasestorage.app",messagingSenderId:"560848656393",appId:"1:560848656393:web:cf5c618b0a0879eb4b80d8"};
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app),provider=new GoogleAuthProvider();
-provider.setCustomParameters({prompt:"select_account"});
-const status=document.getElementById("authStatus"),login=document.getElementById("googleLogin"),logout=document.getElementById("googleLogout"),uid=document.getElementById("authUserId");
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});
+const allowed=new Set(["9u3wvdidcsNV3cb1rXboaXZxD4Q2","7rAlYuBgYoTwBX0xCE1TZotigal1"]);
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,"0");
+const day=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()),month=d=>day(d).slice(0,7);
+const fmt=d=>d.toLocaleDateString("sr-Latn-ME",{day:"2-digit",month:"2-digit",year:"numeric"});
+const store=collection(db,"catara"),KEY="nasa-catara-v1";
+let docs=[],unsub=null,currentUser=null,ready=false;
+let legacy=[];try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(v))legacy=v.filter(x=>typeof x==="string"&&!Number.isNaN(Date.parse(x)));}catch(e){}
+const now=new Date();$("date").value=day(now);$("time").value=pad(now.getHours())+":"+pad(now.getMinutes());
+const status=(message)=>{$("syncStatus").textContent=message;};
+const valid=v=>typeof v==="string"&&Number.isFinite(Date.parse(v));
+const localTime=v=>day(new Date(v));
+const entries=()=>docs.map(x=>x.time);
+function enable(yes){$("add").disabled=!yes;$("past").disabled=!yes;$("undo").disabled=!yes||!docs.length;$("export").disabled=!yes;$("import").disabled=!yes;$("migrate").hidden=!(yes&&legacy.length);}
+function render(){
+ const values=entries(),current=new Date(),t=day(current),m=month(current),counts={};
+ for(const v of values){const k=localTime(v);counts[k]=(counts[k]||0)+1;}
+ $("today").textContent=counts[t]||0;$("month").textContent=values.filter(v=>month(new Date(v))===m).length;
+ $("total").textContent=values.length;$("best").textContent=Math.max(0,...Object.values(counts));
+ const keys=Object.keys(counts).sort().reverse();$("days").replaceChildren();
+ if(!keys.length)$("days").textContent="Još nema zabilježenih prelazaka.";
+ for(const k of keys){const row=document.createElement("div"),d=document.createElement("span"),n=document.createElement("span");
+ row.className="row";d.textContent=fmt(new Date(k+"T12:00:00"));n.className="count";n.textContent=counts[k]+" ×";row.append(d,n);$("days").append(row);}
+ const sel=$("monthPicker"),old=sel.value||m;sel.replaceChildren();
+ const months=[...new Set([m,...keys.map(k=>k.slice(0,7))])].sort().reverse();
+ for(const k of months){const o=document.createElement("option");o.value=k;o.textContent=new Date(k+"-01T12:00:00").toLocaleDateString("sr-Latn-ME",{month:"long",year:"numeric"});sel.append(o);}
+ sel.value=months.includes(old)?old:m;draw(counts);
+ enable(ready&&!!currentUser&&allowed.has(currentUser.uid));
+}
+function draw(counts){
+ const c=$("chart");c.replaceChildren();const selected=$("monthPicker").value;
+ const days=new Date(+selected.slice(0,4),+selected.slice(5,7),0).getDate();
+ const max=Math.max(1,...Array.from({length:days},(_,i)=>counts[selected+"-"+pad(i+1)]||0));
+ for(let i=1;i<=days;i++){const n=counts[selected+"-"+pad(i)]||0;if(!n)continue;
+ const r=document.createElement("div"),a=document.createElement("span"),b=document.createElement("i"),z=document.createElement("b");
+ r.className="bar";a.textContent=pad(i)+".";b.style.width=(n/max*75)+"%";z.textContent=n;r.append(a,b,z);c.append(r);}
+ if(!c.children.length)c.textContent="Nema prelazaka u ovom mjesecu.";
+}
+function mustReady(){if(!ready||!currentUser||!allowed.has(currentUser.uid)){alert("Prvo se prijavi i sačekaj povezivanje sa Firebase bazom.");return false;}return true;}
+async function add(time){if(!mustReady())return;try{await addDoc(store,{time,createdBy:currentUser.uid,createdAt:serverTimestamp()});$("message").textContent="✓ Prelazak je dodat u zajedničku evidenciju.";}catch(e){$("message").textContent="Prelazak nije sačuvan: "+e.message;}}
+$("add").onclick=()=>add(new Date().toISOString());
+$("past").onclick=()=>{const d=$("date").value,t=$("time").value;if(!d||!t)return alert("Izaberi datum i vrijeme.");
+ const x=new Date(d+"T"+t);if(!Number.isFinite(x.getTime())||x>new Date())return alert("Provjeri datum i vrijeme.");add(x.toISOString());};
+$("undo").onclick=async()=>{if(!mustReady()||!docs.length)return;
+ const last=[...docs].sort((a,b)=>Date.parse(b.time)-Date.parse(a.time))[0];
+ if(!confirm("Obrisati posljednji zabilježeni prelazak iz zajedničke evidencije?"))return;
+ try{await deleteDoc(doc(db,"catara",last.id));$("message").textContent="Prelazak je obrisan iz zajedničke evidencije.";}catch(e){alert("Brisanje nije uspjelo: "+e.message);}};
+$("monthPicker").onchange=()=>{const counts={};for(const v of entries()){const k=localTime(v);counts[k]=(counts[k]||0)+1;}draw(counts);};
+$("export").onclick=()=>{if(!mustReady())return;const data={app:"nasa-catara",entries:entries()};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=u;a.download="catara-kopija-"+day(new Date())+".json";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
+async function merge(values){
+ if(!mustReady())return;
+ const cloud=new Map();for(const d of docs)cloud.set(d.time,(cloud.get(d.time)||0)+1);
+ const seen=new Map();const missing=[];
+ for(const time of values){if(!valid(time))throw Error("Neispravan datum");const count=(seen.get(time)||0)+1;seen.set(time,count);
+ if(count>(cloud.get(time)||0))missing.push(time);}
+ if(!missing.length){alert("Svi ti prelasci već postoje u zajedničkoj evidenciji.");return;}
+ if(!confirm("Dodati "+missing.length+" novih prelazaka u zajedničku evidenciju? Postojeći zapisi neće biti obrisani."))return;
+ try{for(let i=0;i<missing.length;i+=400){const batch=writeBatch(db);
+ for(const time of missing.slice(i,i+400))batch.set(doc(store),{time,createdBy:currentUser.uid,createdAt:serverTimestamp()});await batch.commit();}
+ $("message").textContent="✓ Preneseno "+missing.length+" prelazaka u Firebase.";
+ }catch(e){alert("Prenos nije završen: "+e.message+" Provjeri evidenciju prije ponovnog pokušaja.");}
+}
+$("migrate").onclick=()=>merge(legacy);
+$("import").onchange=async ev=>{const f=ev.target.files?.[0];if(!f)return;
+ try{const obj=JSON.parse(await f.text()),data=Array.isArray(obj)?obj:obj.entries;
+ if(!Array.isArray(data)||!data.every(valid))throw Error("Neispravan format");await merge(data);
+ }catch(e){alert("Uvoz nije uspio: "+e.message);}ev.target.value="";};
+const login=$("googleLogin"),logout=$("googleLogout"),uid=$("authUserId");
 onAuthStateChanged(auth,user=>{
-  login.hidden=!!user;logout.hidden=!user;uid.hidden=!user;
-  if(user){status.textContent="Prijavljen nalog: "+(user.email||user.displayName||"Google korisnik");uid.textContent="Tvoj korisnički UID: "+user.uid;}
-  else{status.textContent="Prijavi se svojim Google nalogom. Isto može uraditi supruga na svom telefonu.";uid.textContent="";}
-},error=>{status.textContent="Prijava nije dostupna: "+error.message;login.hidden=false;});
-login.addEventListener("click",async()=>{login.disabled=true;status.textContent="Otvaram Google prijavu…";try{await signInWithPopup(auth,provider);}catch(e){status.textContent="Prijava nije uspjela: "+(e.code==="auth/popup-blocked"?"Pregledač je blokirao prozor. Otvori sajt direktno u Safari/Chrome.":e.message);}finally{login.disabled=false;}});
-logout.addEventListener("click",async()=>{try{await signOut(auth);}catch(e){status.textContent="Odjava nije uspjela: "+e.message;}});
-</script></body></html>
+ if(unsub){unsub();unsub=null;}
+ currentUser=user;ready=false;docs=[];render();
+ login.hidden=!!user;logout.hidden=!user;uid.hidden=!user;
+ if(!user){$("authStatus").textContent="Prijavi se svojim Google nalogom.";uid.textContent="";status("Prijavi se da pristupiš zajedničkoj evidenciji.");return;}
+ $("authStatus").textContent="Prijavljen nalog: "+(user.email||user.displayName||"Google korisnik");
+ uid.textContent="Tvoj korisnički UID: "+user.uid;
+ if(!allowed.has(user.uid)){status("Ovaj nalog nema pristup zajedničkoj evidenciji.");return;}
+ status("Povezivanje sa Firebase bazom…");
+ unsub=onSnapshot(store,snapshot=>{
+ docs=snapshot.docs.map(x=>({id:x.id,time:x.data().time})).filter(x=>valid(x.time));
+ ready=!snapshot.metadata.fromCache;render();
+ status(snapshot.metadata.fromCache?"Prikazani su privremeni keširani podaci. Sačekaj internet vezu.":"✓ Povezano sa Firebase – zajednička evidencija je ažurirana.");
+ },e=>{ready=false;docs=[];render();status("Nije moguće učitati Firebase bazu: "+e.message);});
+},e=>{login.hidden=false;status("Greška autentifikacije: "+e.message);});
+login.onclick=async()=>{login.disabled=true;$("authStatus").textContent="Otvaram Google prijavu…";
+ try{await signInWithPopup(auth,provider);}catch(e){$("authStatus").textContent="Prijava nije uspjela: "+(e.code==="auth/popup-blocked"?"Pregledač blokira prozor za prijavu. Otvori sajt u Safari ili Chrome.":e.message);}
+ finally{login.disabled=false;}};
+logout.onclick=async()=>{try{await signOut(auth);}catch(e){alert("Odjava nije uspjela: "+e.message);}};
+render();
+</script>
+</body></html>
